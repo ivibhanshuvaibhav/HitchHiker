@@ -9,14 +9,14 @@
 import UIKit
 import Firebase
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, Alertable {
 
     @IBOutlet weak var segmentedController: UISegmentedControl!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var authButton: RoundedShadowButton!
     @IBOutlet weak var displayErrorBottomLayout: NSLayoutConstraint!
-    @IBOutlet weak var displayView: RoundView!
+    @IBOutlet weak var displayView: RoundMapView!
     
     var isDriver = false
     
@@ -64,7 +64,7 @@ class LoginVC: UIViewController {
     @IBAction func authButtonPressed(_ sender: Any) {
         if emailTextField.text != "" && passwordTextField.text != "" {
             authButton.animate(shouldLoad: true, withMessage: nil)
-            displayView.isHidden = true
+//            displayView.isHidden = true
             handleTap()
             emailTextField.isUserInteractionEnabled = false
             passwordTextField.isUserInteractionEnabled = false
@@ -85,11 +85,17 @@ class LoginVC: UIViewController {
                                 } else {
                                     let error = registrationError! as NSError
                                     print("Could not register: \(error.localizedDescription)")
-                                    self.showError()
+                                    self.showAlert(error.localizedDescription)
+                                    self.authButton.animate(shouldLoad: false, withMessage: "SIGN UP/ LOGIN")
+                                    self.emailTextField.isUserInteractionEnabled = true
+                                    self.passwordTextField.isUserInteractionEnabled = true
                                 }
                             })
                         } else {
-                            self.showError()
+                            self.authButton.animate(shouldLoad: false, withMessage: "SIGN UP/ LOGIN")
+                            self.showAlert(error.localizedDescription)
+                            self.emailTextField.isUserInteractionEnabled = true
+                            self.passwordTextField.isUserInteractionEnabled = true
                         }
                     }
                 })

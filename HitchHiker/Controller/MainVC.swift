@@ -14,7 +14,7 @@ import RevealingSplashView
 
 let currentUserId = Auth.auth().currentUser?.uid
 
-class MainVC: UIViewController {
+class MainVC: UIViewController,  Alertable {
 
     @IBOutlet weak var actionButton: RoundedShadowButton!
     @IBOutlet weak var menuButton: UIButton!
@@ -148,7 +148,13 @@ class MainVC: UIViewController {
     }
     
     @IBAction func centerMapButtonPressed(_ sender: Any) {
-        centerMapOnUserLocation()
+        DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.hasChild("destinationCoordinates") {
+                 self.zoomToFitAnnotations(fromMapView: self.mapView)
+            } else {
+                self.centerMapOnUserLocation()
+            }
+        }
         centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
     
@@ -210,24 +216,33 @@ extension MainVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? DriverAnnotation {
-            let driverAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "driver")
-            driverAnnotation.image = UIImage(named: "driverAnnotation")
-            if annotation.key == currentUserId! {
-                driverAnnotation.layer.zPosition = 10
+          if let annotation = annotation as? DriverAnnotation {
+            guard let dequeuedDriverAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "driver") else {
+                let driverAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "driver")
+                driverAnnotation.image = UIImage(named: "driverAnnotation")
+                if annotation.key == currentUserId! {
+                    driverAnnotation.layer.zPosition = 10
+                }
+                return driverAnnotation
             }
-            return driverAnnotation
+            return dequeuedDriverAnnotation
         } else if let annotation = annotation as? PassengerAnnotation {
-            let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
-            passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
-            if annotation.key == currentUserId! {
-                passengerAnnotation.layer.zPosition = 10
+            guard let dequeuedPassengerAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "passenger") else {
+                let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
+                passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
+                if annotation.key == currentUserId! {
+                    passengerAnnotation.layer.zPosition = 10
+                }
+                return passengerAnnotation
             }
-            return passengerAnnotation
+            return dequeuedPassengerAnnotation
         } else if let annotation = annotation as? MKPointAnnotation {
-            let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
-            destinationAnnotation.image = UIImage(named: "destinationAnnotation")
-            return destinationAnnotation
+            guard let dequeuedDestinationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "destination") else {
+                let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
+                destinationAnnotation.image = UIImage(named: "destinationAnnotation")
+                return destinationAnnotation
+            }
+            return dequeuedDestinationAnnotation
         }
         return nil
     }
@@ -244,6 +259,9 @@ extension MainVC: MKMapViewDelegate {
         let lineRenderer = MKPolylineRenderer(polyline: (route?.polyline)!)
         lineRenderer.strokeColor = #colorLiteral(red: 0.8470588235, green: 0.2784313725, blue: 0.1176470588, alpha: 1)
         lineRenderer.lineWidth = 3.0
+        
+        zoomToFitAnnotations(fromMapView: mapView)
+        
         return lineRenderer
     }
     
@@ -256,6 +274,8 @@ extension MainVC: MKMapViewDelegate {
         let search = MKLocalSearch(request: request)
         search.start { (response, error) in
             if error != nil {
+                self.showAlert((error?.localizedDescription)!)
+                self.shouldPresent(false)
                 print("Error in searching: \(error.debugDescription)")
             } else if response?.mapItems.count == 0 {
                 print("No results for the query")
@@ -292,6 +312,8 @@ extension MainVC: MKMapViewDelegate {
         let directions = MKDirections(request: request)
         directions.calculate { (response, error) in
             guard let response = response else {
+                self.showAlert((error?.localizedDescription)!)
+                self.shouldPresent(false)
                 print("Error in calculating route: \(error.debugDescription)")
                 return
             }
@@ -302,9 +324,11 @@ extension MainVC: MKMapViewDelegate {
     }
     
     func zoomToFitAnnotations(fromMapView mapView: MKMapView) {
-        if mapView.annotations.count != 0 {
-            
+        if mapView.annotations.count == 0 {
+            return
         }
+        
+        mapView.setVisibleMapRect((route?.polyline.boundingMapRect)!, edgePadding: UIEdgeInsetsMake(40, 60, 40, 60), animated: true)
     }
 }
 
@@ -343,27 +367,6 @@ extension MainVC: UITextFieldDelegate {
         }
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField.text == "" {
-//            
-//        } else {
-//            print(string)
-//            print("r")
-//            print(textField.text!)
-//        }
-//        return true
-//    }
-    
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField.text == "" {
-//            matchingItems = []
-//            tableView.reloadData()
-//        } else {
-//            performSearch()
-//        }
-//        return true
-//    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         shouldPresent(true)
@@ -383,7 +386,7 @@ extension MainVC: UITextFieldDelegate {
         matchingItems = []
         tableView.reloadData()
         
-        DataService.instance.REF_USERS.child(currentUserId!).child("tripCoordinates").removeValue()
+        DataService.instance.REF_USERS.child(currentUserId!).child("destinationCoordinates").removeValue()
         
         mapView.removeOverlays(mapView.overlays)
         for annotation in mapView.annotations {

@@ -10,15 +10,12 @@ import UIKit
 
 class RoundedShadowButton: UIButton {
 
-    var orignalFrame: CGRect?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
     
     func setupView() {
-        orignalFrame = self.frame
         self.layer.cornerRadius = 5.0
         self.layer.shadowRadius = 10.0
         self.layer.shadowColor = UIColor.darkGray.cgColor
@@ -34,9 +31,8 @@ class RoundedShadowButton: UIButton {
         spinner.hidesWhenStopped = true
         spinner.tag = 21
         
-        
+        self.setTitle(message, for: .normal)
         if shouldLoad {
-            self.setTitle("", for: .normal)
             UIView.animate(withDuration: 0.2, animations: {
                 self.layer.cornerRadius = self.frame.height / 2
                 self.frame = CGRect(x: self.frame.midX - (self.frame.height / 2), y: self.frame.origin.y, width: self.frame.height, height: self.frame.height)
@@ -58,8 +54,7 @@ class RoundedShadowButton: UIButton {
             }
             UIView.animate(withDuration: 0.2, animations: {
                 self.layer.cornerRadius = 5.0
-                self.frame = self.orignalFrame!
-                self.setTitle(message, for: .normal)
+                self.frame = CGRect(x: 20, y: 0, width: UIScreen.main.bounds.width - 40, height: self.frame.height)
             })
         }
     }

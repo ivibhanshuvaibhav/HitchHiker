@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import CoreLocation
 
-class MenuVC: UIViewController {
+class MenuVC: UIViewController, Alertable {
 
     @IBOutlet weak var pickupModeSwitch: UISwitch!
     @IBOutlet weak var pickupModeLabel: UILabel!
@@ -103,6 +103,7 @@ class MenuVC: UIViewController {
                 print("Successfully signed out")
                 self.revealViewController().revealToggle(animated: false)
             } catch {
+                self.showAlert(error.localizedDescription)
                 print("Could not sign out: \(error.localizedDescription)")
             }
         }

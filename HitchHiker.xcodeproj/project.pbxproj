@@ -11,12 +11,14 @@
 		2154DDB01FDBF4E700CD5EAE /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */; };
 		2154DDB31FDC12D700CD5EAE /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB21FDC12D700CD5EAE /* DataService.swift */; };
 		2154DDB51FDC23BE00CD5EAE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB41FDC23BE00CD5EAE /* AuthService.swift */; };
-		2154DDB71FDC5B6F00CD5EAE /* RoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */; };
+		2154DDB71FDC5B6F00CD5EAE /* RoundMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB61FDC5B6F00CD5EAE /* RoundMapView.swift */; };
 		217223E61FDAF47C008EB208 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 217223E41FDAF47C008EB208 /* SWRevealViewController.m */; };
 		219684E01FE24D980041C5BE /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219684DF1FE24D980041C5BE /* DriverAnnotation.swift */; };
 		219FC1841FE3FDEF003A0C0F /* PassengerAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */; };
 		21A0540F1FD9364C00B88331 /* RoundedShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */; };
 		21A054111FD9436300B88331 /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A054101FD9436300B88331 /* RoundedShadowButton.swift */; };
+		21A4069F1FE9961500D4AB96 /* Alertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A4069E1FE9961500D4AB96 /* Alertable.swift */; };
+		21A406A11FE9AC6100D4AB96 /* PickupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A406A01FE9AC6100D4AB96 /* PickupVC.swift */; };
 		21C5046A1FDAD3DC00243BDE /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C504691FDAD3DC00243BDE /* MenuVC.swift */; };
 		21DD00F51FE687A9006B732D /* DestinationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */; };
 		21DD00F71FE6C3D9006B732D /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD00F61FE6C3D9006B732D /* UIViewControllerExtension.swift */; };
@@ -38,7 +40,7 @@
 		2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		2154DDB21FDC12D700CD5EAE /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		2154DDB41FDC23BE00CD5EAE /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundView.swift; sourceTree = "<group>"; };
+		2154DDB61FDC5B6F00CD5EAE /* RoundMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundMapView.swift; sourceTree = "<group>"; };
 		217223E41FDAF47C008EB208 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		217223E51FDAF47C008EB208 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		217223E71FDAF494008EB208 /* HitchHiker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HitchHiker-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -46,6 +48,8 @@
 		219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassengerAnnotation.swift; sourceTree = "<group>"; };
 		21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowView.swift; sourceTree = "<group>"; };
 		21A054101FD9436300B88331 /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
+		21A4069E1FE9961500D4AB96 /* Alertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alertable.swift; sourceTree = "<group>"; };
+		21A406A01FE9AC6100D4AB96 /* PickupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupVC.swift; sourceTree = "<group>"; };
 		21C504691FDAD3DC00243BDE /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
 		21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationAnnotation.swift; sourceTree = "<group>"; };
 		21DD00F61FE6C3D9006B732D /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -95,6 +99,14 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		21A4069D1FE995F500D4AB96 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				21A4069E1FE9961500D4AB96 /* Alertable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		21C504621FDA997700243BDE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +139,7 @@
 			children = (
 				21FBEAFF1FDD49610084D7BC /* Resources */,
 				2154DDB11FDC12BC00CD5EAE /* Services */,
+				21A4069D1FE995F500D4AB96 /* Protocols */,
 				21C504621FDA997700243BDE /* Extensions */,
 				21F03F9F1FD87A7200B0DEAB /* Model */,
 				21F03FA01FD87A7800B0DEAB /* View */,
@@ -156,7 +169,7 @@
 				21F03FA41FD87E7000B0DEAB /* RoundImageView.swift */,
 				21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */,
 				21A054101FD9436300B88331 /* RoundedShadowButton.swift */,
-				2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */,
+				2154DDB61FDC5B6F00CD5EAE /* RoundMapView.swift */,
 				219684DF1FE24D980041C5BE /* DriverAnnotation.swift */,
 				219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */,
 				21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */,
@@ -170,6 +183,7 @@
 				21F03F8F1FD84E5300B0DEAB /* MainVC.swift */,
 				21C504691FDAD3DC00243BDE /* MenuVC.swift */,
 				2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */,
+				21A406A01FE9AC6100D4AB96 /* PickupVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -335,10 +349,12 @@
 				21DD00F51FE687A9006B732D /* DestinationAnnotation.swift in Sources */,
 				219FC1841FE3FDEF003A0C0F /* PassengerAnnotation.swift in Sources */,
 				2154DDB31FDC12D700CD5EAE /* DataService.swift in Sources */,
+				21A4069F1FE9961500D4AB96 /* Alertable.swift in Sources */,
 				21C5046A1FDAD3DC00243BDE /* MenuVC.swift in Sources */,
 				21F03F8E1FD84E5300B0DEAB /* AppDelegate.swift in Sources */,
+				21A406A11FE9AC6100D4AB96 /* PickupVC.swift in Sources */,
 				2154DDAE1FDBF48A00CD5EAE /* UIViewExtension.swift in Sources */,
-				2154DDB71FDC5B6F00CD5EAE /* RoundView.swift in Sources */,
+				2154DDB71FDC5B6F00CD5EAE /* RoundMapView.swift in Sources */,
 				21FBEB011FDD49840084D7BC /* Constants.swift in Sources */,
 				21F03FA31FD87AA000B0DEAB /* GradientView.swift in Sources */,
 				21A054111FD9436300B88331 /* RoundedShadowButton.swift in Sources */,
