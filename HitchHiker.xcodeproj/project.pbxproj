@@ -1,0 +1,536 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2154DDAE1FDBF48A00CD5EAE /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDAD1FDBF48A00CD5EAE /* UIViewExtension.swift */; };
+		2154DDB01FDBF4E700CD5EAE /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */; };
+		2154DDB31FDC12D700CD5EAE /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB21FDC12D700CD5EAE /* DataService.swift */; };
+		2154DDB51FDC23BE00CD5EAE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB41FDC23BE00CD5EAE /* AuthService.swift */; };
+		2154DDB71FDC5B6F00CD5EAE /* RoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */; };
+		217223E61FDAF47C008EB208 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 217223E41FDAF47C008EB208 /* SWRevealViewController.m */; };
+		219684E01FE24D980041C5BE /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219684DF1FE24D980041C5BE /* DriverAnnotation.swift */; };
+		219FC1841FE3FDEF003A0C0F /* PassengerAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */; };
+		21A0540F1FD9364C00B88331 /* RoundedShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */; };
+		21A054111FD9436300B88331 /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A054101FD9436300B88331 /* RoundedShadowButton.swift */; };
+		21C5046A1FDAD3DC00243BDE /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C504691FDAD3DC00243BDE /* MenuVC.swift */; };
+		21DD00F51FE687A9006B732D /* DestinationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */; };
+		21DD00F71FE6C3D9006B732D /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD00F61FE6C3D9006B732D /* UIViewControllerExtension.swift */; };
+		21F03F8E1FD84E5300B0DEAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F03F8D1FD84E5300B0DEAB /* AppDelegate.swift */; };
+		21F03F901FD84E5300B0DEAB /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F03F8F1FD84E5300B0DEAB /* MainVC.swift */; };
+		21F03F931FD84E5300B0DEAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21F03F911FD84E5300B0DEAB /* Main.storyboard */; };
+		21F03F951FD84E5300B0DEAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21F03F941FD84E5300B0DEAB /* Assets.xcassets */; };
+		21F03F981FD84E5300B0DEAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21F03F961FD84E5300B0DEAB /* LaunchScreen.storyboard */; };
+		21F03FA31FD87AA000B0DEAB /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F03FA21FD87AA000B0DEAB /* GradientView.swift */; };
+		21F03FA51FD87E7000B0DEAB /* RoundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F03FA41FD87E7000B0DEAB /* RoundImageView.swift */; };
+		21FBEB011FDD49840084D7BC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FBEB001FDD49840084D7BC /* Constants.swift */; };
+		21FBEB051FDDA1740084D7BC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21FBEB041FDDA1740084D7BC /* GoogleService-Info.plist */; };
+		41E649923CD7F0E724A1853A /* Pods_HitchHiker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF291F575C93F2A09898A165 /* Pods_HitchHiker.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1DED84D46032A4EE33762C91 /* Pods-HitchHiker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HitchHiker.release.xcconfig"; path = "Pods/Target Support Files/Pods-HitchHiker/Pods-HitchHiker.release.xcconfig"; sourceTree = "<group>"; };
+		2154DDAD1FDBF48A00CD5EAE /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		2154DDB21FDC12D700CD5EAE /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		2154DDB41FDC23BE00CD5EAE /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundView.swift; sourceTree = "<group>"; };
+		217223E41FDAF47C008EB208 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		217223E51FDAF47C008EB208 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		217223E71FDAF494008EB208 /* HitchHiker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HitchHiker-Bridging-Header.h"; sourceTree = "<group>"; };
+		219684DF1FE24D980041C5BE /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
+		219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassengerAnnotation.swift; sourceTree = "<group>"; };
+		21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowView.swift; sourceTree = "<group>"; };
+		21A054101FD9436300B88331 /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
+		21C504691FDAD3DC00243BDE /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
+		21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationAnnotation.swift; sourceTree = "<group>"; };
+		21DD00F61FE6C3D9006B732D /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		21F03F8A1FD84E5300B0DEAB /* HitchHiker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HitchHiker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21F03F8D1FD84E5300B0DEAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		21F03F8F1FD84E5300B0DEAB /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		21F03F921FD84E5300B0DEAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		21F03F941FD84E5300B0DEAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21F03F971FD84E5300B0DEAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		21F03F991FD84E5300B0DEAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21F03FA21FD87AA000B0DEAB /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		21F03FA41FD87E7000B0DEAB /* RoundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImageView.swift; sourceTree = "<group>"; };
+		21FBEB001FDD49840084D7BC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		21FBEB041FDDA1740084D7BC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C63046A2A4DFEF6B01F4B2C2 /* Pods-HitchHiker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HitchHiker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HitchHiker/Pods-HitchHiker.debug.xcconfig"; sourceTree = "<group>"; };
+		DF291F575C93F2A09898A165 /* Pods_HitchHiker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HitchHiker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		21F03F871FD84E5300B0DEAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41E649923CD7F0E724A1853A /* Pods_HitchHiker.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2154DDB11FDC12BC00CD5EAE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2154DDB21FDC12D700CD5EAE /* DataService.swift */,
+				2154DDB41FDC23BE00CD5EAE /* AuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		217223E31FDAF19A008EB208 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				217223E51FDAF47C008EB208 /* SWRevealViewController.h */,
+				217223E41FDAF47C008EB208 /* SWRevealViewController.m */,
+				217223E71FDAF494008EB208 /* HitchHiker-Bridging-Header.h */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		21C504621FDA997700243BDE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2154DDAD1FDBF48A00CD5EAE /* UIViewExtension.swift */,
+				21DD00F61FE6C3D9006B732D /* UIViewControllerExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		21F03F811FD84E5300B0DEAB = {
+			isa = PBXGroup;
+			children = (
+				21F03F8C1FD84E5300B0DEAB /* HitchHiker */,
+				21F03F8B1FD84E5300B0DEAB /* Products */,
+				57927B89243FB43DF6EC8BD1 /* Pods */,
+				24C67730626212B1EF07B3C5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		21F03F8B1FD84E5300B0DEAB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21F03F8A1FD84E5300B0DEAB /* HitchHiker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		21F03F8C1FD84E5300B0DEAB /* HitchHiker */ = {
+			isa = PBXGroup;
+			children = (
+				21FBEAFF1FDD49610084D7BC /* Resources */,
+				2154DDB11FDC12BC00CD5EAE /* Services */,
+				21C504621FDA997700243BDE /* Extensions */,
+				21F03F9F1FD87A7200B0DEAB /* Model */,
+				21F03FA01FD87A7800B0DEAB /* View */,
+				21F03FA11FD87A7F00B0DEAB /* Controller */,
+				217223E31FDAF19A008EB208 /* Supporting Files */,
+				21F03F8D1FD84E5300B0DEAB /* AppDelegate.swift */,
+				21F03F911FD84E5300B0DEAB /* Main.storyboard */,
+				21F03F941FD84E5300B0DEAB /* Assets.xcassets */,
+				21F03F961FD84E5300B0DEAB /* LaunchScreen.storyboard */,
+				21F03F991FD84E5300B0DEAB /* Info.plist */,
+				21FBEB041FDDA1740084D7BC /* GoogleService-Info.plist */,
+			);
+			path = HitchHiker;
+			sourceTree = "<group>";
+		};
+		21F03F9F1FD87A7200B0DEAB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		21F03FA01FD87A7800B0DEAB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				21F03FA21FD87AA000B0DEAB /* GradientView.swift */,
+				21F03FA41FD87E7000B0DEAB /* RoundImageView.swift */,
+				21A0540E1FD9364C00B88331 /* RoundedShadowView.swift */,
+				21A054101FD9436300B88331 /* RoundedShadowButton.swift */,
+				2154DDB61FDC5B6F00CD5EAE /* RoundView.swift */,
+				219684DF1FE24D980041C5BE /* DriverAnnotation.swift */,
+				219FC1831FE3FDEF003A0C0F /* PassengerAnnotation.swift */,
+				21DD00F41FE687A9006B732D /* DestinationAnnotation.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		21F03FA11FD87A7F00B0DEAB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				21F03F8F1FD84E5300B0DEAB /* MainVC.swift */,
+				21C504691FDAD3DC00243BDE /* MenuVC.swift */,
+				2154DDAF1FDBF4E700CD5EAE /* LoginVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		21FBEAFF1FDD49610084D7BC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				21FBEB001FDD49840084D7BC /* Constants.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		24C67730626212B1EF07B3C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DF291F575C93F2A09898A165 /* Pods_HitchHiker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		57927B89243FB43DF6EC8BD1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C63046A2A4DFEF6B01F4B2C2 /* Pods-HitchHiker.debug.xcconfig */,
+				1DED84D46032A4EE33762C91 /* Pods-HitchHiker.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		21F03F891FD84E5300B0DEAB /* HitchHiker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21F03F9C1FD84E5300B0DEAB /* Build configuration list for PBXNativeTarget "HitchHiker" */;
+			buildPhases = (
+				B5C66EE6DF40399430DD5A2F /* [CP] Check Pods Manifest.lock */,
+				21F03F861FD84E5300B0DEAB /* Sources */,
+				21F03F871FD84E5300B0DEAB /* Frameworks */,
+				21F03F881FD84E5300B0DEAB /* Resources */,
+				6572846FCAAA118FAA8F9D28 /* [CP] Embed Pods Frameworks */,
+				1FB0B3F7FFE5846E549AE5FF /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HitchHiker;
+			productName = HitchHiker;
+			productReference = 21F03F8A1FD84E5300B0DEAB /* HitchHiker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		21F03F821FD84E5300B0DEAB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Vibhanshu Vaibhav";
+				TargetAttributes = {
+					21F03F891FD84E5300B0DEAB = {
+						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 21F03F851FD84E5300B0DEAB /* Build configuration list for PBXProject "HitchHiker" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 21F03F811FD84E5300B0DEAB;
+			productRefGroup = 21F03F8B1FD84E5300B0DEAB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				21F03F891FD84E5300B0DEAB /* HitchHiker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		21F03F881FD84E5300B0DEAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21F03F981FD84E5300B0DEAB /* LaunchScreen.storyboard in Resources */,
+				21FBEB051FDDA1740084D7BC /* GoogleService-Info.plist in Resources */,
+				21F03F951FD84E5300B0DEAB /* Assets.xcassets in Resources */,
+				21F03F931FD84E5300B0DEAB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1FB0B3F7FFE5846E549AE5FF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HitchHiker/Pods-HitchHiker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6572846FCAAA118FAA8F9D28 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HitchHiker/Pods-HitchHiker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5C66EE6DF40399430DD5A2F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21F03F861FD84E5300B0DEAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21F03F901FD84E5300B0DEAB /* MainVC.swift in Sources */,
+				21F03FA51FD87E7000B0DEAB /* RoundImageView.swift in Sources */,
+				21DD00F71FE6C3D9006B732D /* UIViewControllerExtension.swift in Sources */,
+				21A0540F1FD9364C00B88331 /* RoundedShadowView.swift in Sources */,
+				2154DDB51FDC23BE00CD5EAE /* AuthService.swift in Sources */,
+				219684E01FE24D980041C5BE /* DriverAnnotation.swift in Sources */,
+				217223E61FDAF47C008EB208 /* SWRevealViewController.m in Sources */,
+				2154DDB01FDBF4E700CD5EAE /* LoginVC.swift in Sources */,
+				21DD00F51FE687A9006B732D /* DestinationAnnotation.swift in Sources */,
+				219FC1841FE3FDEF003A0C0F /* PassengerAnnotation.swift in Sources */,
+				2154DDB31FDC12D700CD5EAE /* DataService.swift in Sources */,
+				21C5046A1FDAD3DC00243BDE /* MenuVC.swift in Sources */,
+				21F03F8E1FD84E5300B0DEAB /* AppDelegate.swift in Sources */,
+				2154DDAE1FDBF48A00CD5EAE /* UIViewExtension.swift in Sources */,
+				2154DDB71FDC5B6F00CD5EAE /* RoundView.swift in Sources */,
+				21FBEB011FDD49840084D7BC /* Constants.swift in Sources */,
+				21F03FA31FD87AA000B0DEAB /* GradientView.swift in Sources */,
+				21A054111FD9436300B88331 /* RoundedShadowButton.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		21F03F911FD84E5300B0DEAB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21F03F921FD84E5300B0DEAB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		21F03F961FD84E5300B0DEAB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21F03F971FD84E5300B0DEAB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		21F03F9A1FD84E5300B0DEAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		21F03F9B1FD84E5300B0DEAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		21F03F9D1FD84E5300B0DEAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C63046A2A4DFEF6B01F4B2C2 /* Pods-HitchHiker.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HitchHiker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vibhanshuvaibhav.HitchHiker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HitchHiker/Supporting Files/HitchHiker-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21F03F9E1FD84E5300B0DEAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DED84D46032A4EE33762C91 /* Pods-HitchHiker.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HitchHiker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vibhanshuvaibhav.HitchHiker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HitchHiker/Supporting Files/HitchHiker-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21F03F851FD84E5300B0DEAB /* Build configuration list for PBXProject "HitchHiker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21F03F9A1FD84E5300B0DEAB /* Debug */,
+				21F03F9B1FD84E5300B0DEAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21F03F9C1FD84E5300B0DEAB /* Build configuration list for PBXNativeTarget "HitchHiker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21F03F9D1FD84E5300B0DEAB /* Debug */,
+				21F03F9E1FD84E5300B0DEAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 21F03F821FD84E5300B0DEAB /* Project object */;
+}
