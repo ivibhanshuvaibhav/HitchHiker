@@ -31,6 +31,24 @@ var pickupIsEnabled: Bool {
     }
 }
 
+var driverIsOnTrip: Bool {
+    get {
+        return defaults.bool(forKey: "driverOnTrip")
+    }
+    set {
+        defaults.set(newValue, forKey: "driverOnTrip")
+    }
+}
+
+var userIsOnTrip: Bool {
+    get {
+        return defaults.bool(forKey: "userOnTrip")
+    }
+    set {
+        defaults.set(newValue, forKey: "userOnTrip")
+    }
+}
+
 class AuthService {
     
     static let instance = AuthService()
@@ -41,14 +59,15 @@ class AuthService {
                 userCreationComplete(false, error)
                 return
             }
-            
             if isDriver {
                 userIsDriver = true
                 pickupIsEnabled = false
+                driverIsOnTrip = false
                 let userData = ["provider": user.providerID, "userIsDriver": true, "isPickupModeEnabled": false, "driverIsOnTrip": false] as [String: Any]
                 DataService.instance.createDBUser(uid: user.uid, userData: userData, isDriver: true)
             } else {
                 userIsDriver = false
+                userIsOnTrip = false
                 let userData = ["provider": user.providerID] as [String: Any]
                 DataService.instance.createDBUser(uid: user.uid, userData: userData, isDriver: false)
             }

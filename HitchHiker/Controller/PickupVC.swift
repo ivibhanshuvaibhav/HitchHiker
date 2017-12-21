@@ -14,16 +14,27 @@ class PickupVC: UIViewController {
     @IBOutlet weak var mapView: RoundMapView!
     
     let regionRadius: CLLocationDistance = 2000
-    var pin: MKPlacemark?
+    
     var pickupCoordinate: CLLocationCoordinate2D?
     var passengerKey: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        mapView.isUserInteractionEnabled = false
         
         centerMapOnUserLocation(location: CLLocation(latitude: (pickupCoordinate?.latitude)!, longitude: (pickupCoordinate?.longitude)!))
+        
         dropPin(forlocation: CLLocation(latitude: (pickupCoordinate?.latitude)!, longitude: (pickupCoordinate?.longitude)!))
+        DataService.instance.REF_TRIPS.child(passengerKey!).observe(.value) { (tripSnapshot) in
+            if tripSnapshot.exists() {
+                if tripSnapshot.childSnapshot(forPath: "tripIsAccepted").value as! Bool == true {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     func initData(pickupCoordinate: CLLocationCoordinate2D, passengerKey: String) {
@@ -32,7 +43,8 @@ class PickupVC: UIViewController {
     }
 
     @IBAction func acceptTripButtonPressed(_ sender: Any) {
-        
+        DataService.instance.acceptTrip(withPassengerKey: passengerKey!, andDriverKey: currentUserId!)
+        presentingViewController?.shouldPresent(true)
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -57,8 +69,6 @@ extension PickupVC: MKMapViewDelegate {
     }
     
     func dropPin(forlocation location: CLLocation) {
-//        pin = placemark
-        
         for annotation in mapView.annotations {
             mapView.removeAnnotation(annotation)
         }

@@ -12,6 +12,7 @@ import CoreLocation
 import Firebase
 import RevealingSplashView
 
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
 let currentUserId = Auth.auth().currentUser?.uid
 
 class MainVC: UIViewController,  Alertable {
@@ -23,6 +24,7 @@ class MainVC: UIViewController,  Alertable {
     @IBOutlet weak var topView: GradientView!
     @IBOutlet weak var destinationTextField: UITextField!
     @IBOutlet weak var destinationCircle: RoundImageView!
+    @IBOutlet weak var cancelButton: UIButton!
     
     let locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
@@ -58,7 +60,7 @@ class MainVC: UIViewController,  Alertable {
                         }
                     }
                 })
-                DataService.instance.isDriverAvailable { (available) in
+                DataService.instance.driverIsAvailable { (available) in
                     if available {
                         DataService.instance.observeTrips(handler: { (tripDict) in
                             guard let tripDict = tripDict else { return }
@@ -77,10 +79,33 @@ class MainVC: UIViewController,  Alertable {
             }
         }
         
-        
-        
         addRevealViewController()
         addSplashView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if userIsDriver {
+            DataService.instance.driverIsAvailable { (available) in
+                if !available {
+                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
+                        guard let tripsSnapshot = tripsSnapshot.children.allObjects as?   [DataSnapshot] else { return }
+                        for trip in tripsSnapshot {
+                            if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
+                                let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinates").value as! NSArray
+                                let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees)
+                                let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
+                                
+                                self.dropPin(forPlacemark: pickupPlacemark)
+                                self.showRoute(forMapItem: MKMapItem(placemark: pickupPlacemark))
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        
     }
     
     func addRevealViewController() {
@@ -174,6 +199,36 @@ class MainVC: UIViewController,  Alertable {
         actionButton.animate(shouldLoad: true, withMessage: nil)
     }
     
+    @IBAction func cancelTripButtonPressed(_ sender: Any) {
+        mapView.removeOverlays(mapView.overlays)
+        centerMapOnUserLocation()
+        if userIsDriver {
+            if driverIsOnTrip {
+                DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
+                    guard let tripsSnapshot = tripsSnapshot.children.allObjects as? [DataSnapshot] else { return }
+                    
+                    for trip in tripsSnapshot {
+                        if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
+                            let passengerId = trip.childSnapshot(forPath: "passengerId").value as! String
+                            DataService.instance.cancelTrip(withPassengerKey: passengerId, andDriverKey: currentUserId!)
+                        }
+                    }
+                })
+                
+            }
+        } else {
+            if userIsOnTrip {
+                DataService.instance.REF_TRIPS.child(currentUserId!).observeSingleEvent(of: .value, with: { (tripSnapshot) in
+                    guard let driverKey = tripSnapshot.childSnapshot(forPath: "driverKey").value as? String else {
+                        DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: nil)
+                        return
+                    }
+                    DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: driverKey)
+                })
+            }
+        }
+    }
+    
 }
 
 // MKMapView Delegates
@@ -190,10 +245,9 @@ extension MainVC: MKMapViewDelegate {
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         if initialLoad {
             centerMapOnUserLocation()
+            self.centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
             initialLoad = false
         }
-        
-        self.centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -240,6 +294,7 @@ extension MainVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
           if let annotation = annotation as? DriverAnnotation {
             guard let dequeuedDriverAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "driver") else {
+                print("dequeue driver called")
                 let driverAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "driver")
                 driverAnnotation.image = UIImage(named: "driverAnnotation")
                 if annotation.key == currentUserId! {
@@ -247,25 +302,38 @@ extension MainVC: MKMapViewDelegate {
                 }
                 return driverAnnotation
             }
+            print("dequeue driver made")
+//            print("ft")
+//            print("\(annotation.coordinate)")
+//            dequeuedDriverAnnotation.annotation = annotation
+//            print("\(String(describing: dequeuedDriverAnnotation.annotation?.coordinate))")
+
             return dequeuedDriverAnnotation
-        } else if let annotation = annotation as? PassengerAnnotation {
-            guard let dequeuedPassengerAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "passenger") else {
-                let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
-                passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
-                if annotation.key == currentUserId! {
-                    passengerAnnotation.layer.zPosition = 10
-                }
-                return passengerAnnotation
-            }
-            return dequeuedPassengerAnnotation
-        } else if let annotation = annotation as? MKPointAnnotation {
-            guard let dequeuedDestinationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "destination") else {
-                let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
-                destinationAnnotation.image = UIImage(named: "destinationAnnotation")
-                return destinationAnnotation
-            }
-            return dequeuedDestinationAnnotation
+            
         }
+//        } else if let annotation = annotation as? PassengerAnnotation {
+//            guard let dequeuedPassengerAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "passenger") else {
+//                let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
+//                passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
+//                if annotation.key == currentUserId! {
+//                    passengerAnnotation.layer.zPosition = 10
+//                }
+//                return passengerAnnotation
+//            }
+//            print("pass ")
+//            print("\(annotation.coordinate)")
+//            dequeuedPassengerAnnotation.annotation = annotation
+//            print("\(String(describing: dequeuedPassengerAnnotation.annotation?.coordinate))")
+//
+//            return dequeuedPassengerAnnotation
+//        } else if let annotation = annotation as? MKPointAnnotation {
+//            guard let dequeuedDestinationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "destination") else {
+//                let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
+//                destinationAnnotation.image = UIImage(named: "destinationAnnotation")
+//                return destinationAnnotation
+//            }
+//            return dequeuedDestinationAnnotation
+//        }
         return nil
     }
     
@@ -342,6 +410,7 @@ extension MainVC: MKMapViewDelegate {
             self.route = response.routes[0]
             self.mapView.add((self.route?.polyline)!)
             self.shouldPresent(false)
+            appDelegate?.window?.rootViewController?.shouldPresent(false)
         }
     }
     
