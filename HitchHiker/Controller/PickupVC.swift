@@ -13,12 +13,25 @@ class PickupVC: UIViewController {
 
     @IBOutlet weak var mapView: RoundMapView!
     
+    let regionRadius: CLLocationDistance = 2000
+    var pin: MKPlacemark?
+    var pickupCoordinate: CLLocationCoordinate2D?
+    var passengerKey: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        
+        centerMapOnUserLocation(location: CLLocation(latitude: (pickupCoordinate?.latitude)!, longitude: (pickupCoordinate?.longitude)!))
+        dropPin(forlocation: CLLocation(latitude: (pickupCoordinate?.latitude)!, longitude: (pickupCoordinate?.longitude)!))
+    }
+    
+    func initData(pickupCoordinate: CLLocationCoordinate2D, passengerKey: String) {
+        self.pickupCoordinate = pickupCoordinate
+        self.passengerKey = passengerKey
     }
 
-    @IBAction func AcceptTripButtonPressed(_ sender: Any) {
+    @IBAction func acceptTripButtonPressed(_ sender: Any) {
         
     }
     
@@ -30,6 +43,28 @@ class PickupVC: UIViewController {
 
 extension PickupVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        return nil
+        guard let dequeuedAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "userLocation") else {
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "userLocation")
+            annotationView.image = UIImage(named: "currentLocationAnnotation")
+            return annotationView
+        }
+        return dequeuedAnnotation
+    }
+    
+    func centerMapOnUserLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func dropPin(forlocation location: CLLocation) {
+//        pin = placemark
+        
+        for annotation in mapView.annotations {
+            mapView.removeAnnotation(annotation)
+        }
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location.coordinate
+        mapView.addAnnotation(annotation)
     }
 }

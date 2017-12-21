@@ -408,7 +408,7 @@
                                             <color key="titleColor" red="0.12941176469999999" green="0.32156862749999998" blue="0.4823529412" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="AcceptTripButtonPressed:" destination="zVU-f4-liZ" eventType="touchUpInside" id="uST-Tb-oZ2"/>
+                                            <action selector="acceptTripButtonPressed:" destination="zVU-f4-liZ" eventType="touchUpInside" id="2dk-2F-D7X"/>
                                         </connections>
                                     </button>
                                 </subviews>

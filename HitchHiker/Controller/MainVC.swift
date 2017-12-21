@@ -31,6 +31,7 @@ class MainVC: UIViewController,  Alertable {
     let tableView = UITableView()
     var route: MKRoute?
     
+    var initialLoad = true
     var matchingItems = [MKMapItem]()
     
     override func viewDidLoad() {
@@ -40,7 +41,6 @@ class MainVC: UIViewController,  Alertable {
         destinationTextField.delegate = self
         
         configureLocationServices()
-        centerMapOnUserLocation()
         
         if Auth.auth().currentUser != nil {
             if userIsDriver {
@@ -58,12 +58,26 @@ class MainVC: UIViewController,  Alertable {
                         }
                     }
                 })
+                DataService.instance.isDriverAvailable { (available) in
+                    if available {
+                        DataService.instance.observeTrips(handler: { (tripDict) in
+                            guard let tripDict = tripDict else { return }
+                            let pickupCoordinates = tripDict["pickupCoordinates"] as! NSArray
+                            let passengerKey = tripDict["passengerId"] as! String
+                            let pickupVC = self.storyboard?.instantiateViewController(withIdentifier: "PickupVC") as! PickupVC
+                            pickupVC.initData(pickupCoordinate: CLLocationCoordinate2DMake(pickupCoordinates[0] as! CLLocationDegrees, pickupCoordinates[1] as! CLLocationDegrees), passengerKey: passengerKey)
+                            self.present(pickupVC, animated: true, completion: nil)
+                        })
+                    }
+                }
             } else {
                 DataService.instance.REF_DRIVERS.observe(.value) { (snapshot) in
                     self.loadDriverAnnotation()
                 }
             }
         }
+        
+        
         
         addRevealViewController()
         addSplashView()
@@ -134,12 +148,10 @@ class MainVC: UIViewController,  Alertable {
                         self.mapView.addAnnotation(driverAnnotation)
                     }
                 } else {
-                    for annotation in self.mapView.annotations {
-                        if annotation.isKind(of: DriverAnnotation.self) {
-                            guard let annotation = annotation as? DriverAnnotation else { return }
-                            if annotation.key == driver.key {
-                                self.mapView.removeAnnotation(annotation)
-                            }
+                    for annotation in self.mapView.annotations where annotation.isKind(of: DriverAnnotation.self) {
+                        guard let annotation = annotation as? DriverAnnotation else { return }
+                        if annotation.key == driver.key {
+                            self.mapView.removeAnnotation(annotation)
                         }
                     }
                 }
@@ -150,15 +162,15 @@ class MainVC: UIViewController,  Alertable {
     @IBAction func centerMapButtonPressed(_ sender: Any) {
         DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.hasChild("destinationCoordinates") {
-                 self.zoomToFitAnnotations(fromMapView: self.mapView)
+                self.zoomToFitAnnotations(fromMapView: self.mapView)
             } else {
                 self.centerMapOnUserLocation()
             }
         }
-        centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
     
     @IBAction func actionButtonPressed(_ sender: Any) {
+        DataService.instance.updateTripWithCoordinates()
         actionButton.animate(shouldLoad: true, withMessage: nil)
     }
     
@@ -172,6 +184,16 @@ extension MainVC: MKMapViewDelegate {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: false)
         mapView.setUserTrackingMode(.follow, animated: true)
+        self.centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        if initialLoad {
+            centerMapOnUserLocation()
+            initialLoad = false
+        }
+        
+        self.centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -328,7 +350,12 @@ extension MainVC: MKMapViewDelegate {
             return
         }
         
-        mapView.setVisibleMapRect((route?.polyline.boundingMapRect)!, edgePadding: UIEdgeInsetsMake(40, 60, 40, 60), animated: true)
+        guard let mapRect = route?.polyline.boundingMapRect else {
+            centerMapOnUserLocation()
+            return
+        }
+        mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsetsMake(180, 60, 120, 60), animated: true)
+        centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
 }
 
@@ -459,4 +486,5 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
             animateTableView(shouldShow: false)
         }
     }
+
 }

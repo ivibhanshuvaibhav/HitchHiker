@@ -35,8 +35,6 @@ class AuthService {
     
     static let instance = AuthService()
     
-    
-    
     func registerUser(withEmail email: String, andPassword password: String, isDriver: Bool, userCreationComplete: @escaping completion) {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             guard let user = user else {
