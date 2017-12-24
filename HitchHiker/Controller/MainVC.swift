@@ -15,8 +15,8 @@ import RevealingSplashView
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 let currentUserId = Auth.auth().currentUser?.uid
 
-class MainVC: UIViewController,  Alertable {
-
+class MainVC: UIViewController, Alertable {
+    
     @IBOutlet weak var actionButton: RoundedShadowButton!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
@@ -25,6 +25,7 @@ class MainVC: UIViewController,  Alertable {
     @IBOutlet weak var destinationTextField: UITextField!
     @IBOutlet weak var destinationCircle: RoundImageView!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var userImage: RoundImageView!
     
     let locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
@@ -35,6 +36,80 @@ class MainVC: UIViewController,  Alertable {
     
     var initialLoad = true
     var matchingItems = [MKMapItem]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        for subview in view.subviews {
+            if subview.tag == 21 {
+                subview.removeFromSuperview()
+            }
+        }
+        cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.0)
+
+        if userIsDriver {
+            userImage.isHidden = false
+            userImage.image = UIImage(named: "driverAnnotation")
+        } else {
+            userImage.isHidden = false
+            userImage.image = UIImage(named: "currentLocationAnnotation")
+        }
+
+        if userIsDriver {
+            DataService.instance.REF_TRIPS.observe(.childRemoved, with: { (removedTripSnapshot) in
+                guard let removedDriverKey = removedTripSnapshot.childSnapshot(forPath: "driverKey").value as? String else {
+                    return
+                }
+                if removedDriverKey == currentUserId! {
+                    self.removeAnnotationAndOverlays()
+                    DataService.instance.REF_USERS.observe(.value) { (snapshot) in
+                        self.loadPassengerAnnotation()
+                    }
+                    self.cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+                }
+            })
+
+            DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value as! Bool == true {
+                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
+                        guard let tripsSnapshot = tripsSnapshot.children.allObjects as?   [DataSnapshot] else { return }
+                        for trip in tripsSnapshot {
+                            if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
+                                let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinates").value as! NSArray
+                                let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees)
+                                let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
+
+                                self.dropPin(forPlacemark: pickupPlacemark)
+                                self.showRoute(forMapItem: MKMapItem(placemark: pickupPlacemark))
+
+                                self.cancelButton.fadeTo(alphaValue: 1.0, withDuration: 0.2)
+                                DataService.instance.REF_USERS.removeAllObservers()
+                                for annotation in self.mapView.annotations where annotation.isKind(of: PassengerAnnotation.self) {
+                                    self.mapView.removeAnnotation(annotation)
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+        } else {
+            DataService.instance.REF_TRIPS.observe(.childRemoved, with: { (removedTripSnapshot) in
+                if removedTripSnapshot.key == currentUserId! {
+                    self.removeAnnotationAndOverlays()
+                    DataService.instance.REF_DRIVERS.observe(.value) { (snapshot) in
+                        self.loadDriverAnnotation()
+                    }
+                    self.matchingItems = []
+                    self.tableView.reloadData()
+
+                    self.destinationTextField.text = ""
+                    self.destinationTextField.isUserInteractionEnabled = true
+
+                    self.cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+                    self.actionButton.animate(shouldLoad: false, withMessage: "REQUEST RIDE")
+                }
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +135,9 @@ class MainVC: UIViewController,  Alertable {
                         }
                     }
                 })
-                DataService.instance.driverIsAvailable { (available) in
-                    if available {
+                
+                DataService.instance.driverIsAvailable(handler: { (available) in
+                    if !available {
                         DataService.instance.observeTrips(handler: { (tripDict) in
                             guard let tripDict = tripDict else { return }
                             let pickupCoordinates = tripDict["pickupCoordinates"] as! NSArray
@@ -71,7 +147,7 @@ class MainVC: UIViewController,  Alertable {
                             self.present(pickupVC, animated: true, completion: nil)
                         })
                     }
-                }
+                })
             } else {
                 DataService.instance.REF_DRIVERS.observe(.value) { (snapshot) in
                     self.loadDriverAnnotation()
@@ -83,29 +159,12 @@ class MainVC: UIViewController,  Alertable {
         addSplashView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if userIsDriver {
-            DataService.instance.driverIsAvailable { (available) in
-                if !available {
-                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
-                        guard let tripsSnapshot = tripsSnapshot.children.allObjects as?   [DataSnapshot] else { return }
-                        for trip in tripsSnapshot {
-                            if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
-                                let pickupCoordinateArray = trip.childSnapshot(forPath: "pickupCoordinates").value as! NSArray
-                                let pickupCoordinate = CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees)
-                                let pickupPlacemark = MKPlacemark(coordinate: pickupCoordinate)
-                                
-                                self.dropPin(forPlacemark: pickupPlacemark)
-                                self.showRoute(forMapItem: MKMapItem(placemark: pickupPlacemark))
-                            }
-                        }
-                    })
-                }
-            }
+    func removeAnnotationAndOverlays() {
+        self.mapView.removeOverlays(self.mapView.overlays)
+        self.centerMapOnUserLocation()
+        for annotation in self.mapView.annotations where annotation.isKind(of: MKPointAnnotation.self) {
+            self.mapView.removeAnnotation(annotation)
         }
-        
     }
     
     func addRevealViewController() {
@@ -185,55 +244,88 @@ class MainVC: UIViewController,  Alertable {
     }
     
     @IBAction func centerMapButtonPressed(_ sender: Any) {
-        DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.hasChild("destinationCoordinates") {
-                self.zoomToFitAnnotations(fromMapView: self.mapView)
-            } else {
-                self.centerMapOnUserLocation()
+        if userIsDriver {
+            DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool == true {
+                    self.zoomToFitAnnotations(fromMapView: self.mapView)
+                } else {
+                    self.centerMapOnUserLocation()
+                }
+            })
+        } else {
+            DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
+                if snapshot.hasChild("destinationCoordinates") {
+                    self.zoomToFitAnnotations(fromMapView: self.mapView)
+                } else {
+                    self.centerMapOnUserLocation()
+                }
             }
         }
     }
     
     @IBAction func actionButtonPressed(_ sender: Any) {
         DataService.instance.updateTripWithCoordinates()
+        cancelButton.fadeTo(alphaValue: 1.0, withDuration: 0.2)
+        destinationTextField.isUserInteractionEnabled = false
         actionButton.animate(shouldLoad: true, withMessage: nil)
     }
     
     @IBAction func cancelTripButtonPressed(_ sender: Any) {
-        mapView.removeOverlays(mapView.overlays)
         centerMapOnUserLocation()
         if userIsDriver {
-            if driverIsOnTrip {
-                DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
-                    guard let tripsSnapshot = tripsSnapshot.children.allObjects as? [DataSnapshot] else { return }
-                    
-                    for trip in tripsSnapshot {
-                        if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
-                            let passengerId = trip.childSnapshot(forPath: "passengerId").value as! String
-                            DataService.instance.cancelTrip(withPassengerKey: passengerId, andDriverKey: currentUserId!)
+            DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value as! Bool {
+                    DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
+                        guard let tripsSnapshot = tripsSnapshot.children.allObjects as? [DataSnapshot] else { return }
+                        
+                        for trip in tripsSnapshot {
+                            if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
+                                let passengerId = trip.childSnapshot(forPath: "passengerId").value as! String
+                                DataService.instance.cancelTrip(withPassengerKey: passengerId, andDriverKey: currentUserId!)
+                            }
                         }
-                    }
-                })
-                
-            }
+                    })
+                }
+            })
+            self.cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+//            if driverIsOnTrip {
+//                DataService.instance.REF_TRIPS.observeSingleEvent(of: .value, with: { (tripsSnapshot) in
+//                    guard let tripsSnapshot = tripsSnapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//                    for trip in tripsSnapshot {
+//                        if trip.childSnapshot(forPath: "driverKey").value as! String == currentUserId! {
+//                            let passengerId = trip.childSnapshot(forPath: "passengerId").value as! String
+//                            DataService.instance.cancelTrip(withPassengerKey: passengerId, andDriverKey: currentUserId!)
+//                        }
+//                    }
+//                })
+//                cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+//            }
         } else {
-            if userIsOnTrip {
-                DataService.instance.REF_TRIPS.child(currentUserId!).observeSingleEvent(of: .value, with: { (tripSnapshot) in
-                    guard let driverKey = tripSnapshot.childSnapshot(forPath: "driverKey").value as? String else {
-                        DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: nil)
-                        return
-                    }
-                    DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: driverKey)
-                })
-            }
+            DataService.instance.REF_TRIPS.child(currentUserId!).observeSingleEvent(of: .value, with: { (tripSnapshot) in
+                guard let driverKey = tripSnapshot.childSnapshot(forPath: "driverKey").value as? String else {
+                    DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: nil)
+                    return
+                }
+                DataService.instance.cancelTrip(withPassengerKey: currentUserId!, andDriverKey: driverKey)
+            })
+            
+            matchingItems = []
+            tableView.reloadData()
+            
+            destinationTextField.text = ""
+            destinationTextField.isUserInteractionEnabled = true
+            
+            cancelButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
+            actionButton.animate(shouldLoad: false, withMessage: "REQUEST RIDE")
         }
     }
-    
 }
 
 // MKMapView Delegates
 
 extension MainVC: MKMapViewDelegate {
+    
     func centerMapOnUserLocation() {
         guard let coordinate = locationManager.location?.coordinate else { return }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, regionRadius * 2.0, regionRadius * 2.0)
@@ -245,7 +337,6 @@ extension MainVC: MKMapViewDelegate {
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         if initialLoad {
             centerMapOnUserLocation()
-            self.centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
             initialLoad = false
         }
     }
@@ -263,11 +354,11 @@ extension MainVC: MKMapViewDelegate {
                     }
                     return false
                 })
-
+                
                 if !isVisible {
                     let driverAnnotation = DriverAnnotation(coordinate: userLocation.coordinate, key: currentUserId!)
                     self.mapView.addAnnotation(driverAnnotation)
-                    }
+                }
             } else {
                 let isVisible = self.mapView.annotations.contains(where: { (annotation) -> Bool in
                     if let userAnnotation = annotation as? PassengerAnnotation {
@@ -278,7 +369,7 @@ extension MainVC: MKMapViewDelegate {
                     }
                     return false
                 })
-
+                
                 if !isVisible {
                     let userAnnotation = PassengerAnnotation(coordinate: userLocation.coordinate, key: currentUserId!)
                     self.mapView.addAnnotation(userAnnotation)
@@ -291,54 +382,50 @@ extension MainVC: MKMapViewDelegate {
         }
     }
     
+    
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-          if let annotation = annotation as? DriverAnnotation {
+        if let annotation = annotation as? DriverAnnotation {
             guard let dequeuedDriverAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "driver") else {
-                print("dequeue driver called")
                 let driverAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "driver")
                 driverAnnotation.image = UIImage(named: "driverAnnotation")
-                if annotation.key == currentUserId! {
-                    driverAnnotation.layer.zPosition = 10
-                }
                 return driverAnnotation
             }
-            print("dequeue driver made")
-//            print("ft")
-//            print("\(annotation.coordinate)")
-//            dequeuedDriverAnnotation.annotation = annotation
-//            print("\(String(describing: dequeuedDriverAnnotation.annotation?.coordinate))")
-
             return dequeuedDriverAnnotation
-            
+        } else if let annotation = annotation as? PassengerAnnotation {
+            guard let dequeuedPassengerAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "passenger") else {
+                let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
+                passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
+                return passengerAnnotation
+            }
+            return dequeuedPassengerAnnotation
+        } else if let annotation = annotation as? MKPointAnnotation {
+            guard let dequeuedDestinationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "destination") else {
+                let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
+                destinationAnnotation.image = UIImage(named: "destinationAnnotation")
+                return destinationAnnotation
+            }
+            return dequeuedDestinationAnnotation
         }
-//        } else if let annotation = annotation as? PassengerAnnotation {
-//            guard let dequeuedPassengerAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "passenger") else {
-//                let passengerAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "passenger")
-//                passengerAnnotation.image = UIImage(named: "currentLocationAnnotation")
-//                if annotation.key == currentUserId! {
-//                    passengerAnnotation.layer.zPosition = 10
-//                }
-//                return passengerAnnotation
-//            }
-//            print("pass ")
-//            print("\(annotation.coordinate)")
-//            dequeuedPassengerAnnotation.annotation = annotation
-//            print("\(String(describing: dequeuedPassengerAnnotation.annotation?.coordinate))")
-//
-//            return dequeuedPassengerAnnotation
-//        } else if let annotation = annotation as? MKPointAnnotation {
-//            guard let dequeuedDestinationAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "destination") else {
-//                let destinationAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: "destination")
-//                destinationAnnotation.image = UIImage(named: "destinationAnnotation")
-//                return destinationAnnotation
-//            }
-//            return dequeuedDestinationAnnotation
-//        }
         return nil
     }
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        view.layer.zPosition = 5
+        for view in views {
+            if userIsDriver {
+                if view.reuseIdentifier == "driver" {
+                    view.layer.zPosition = 100
+                } else {
+                    view.layer.zPosition = -100
+                }
+            } else {
+                if view.reuseIdentifier == "passenger" {
+                    view.layer.zPosition = 100
+                } else {
+                    view.layer.zPosition = -100
+                }
+            }
+        }
     }
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
@@ -404,6 +491,10 @@ extension MainVC: MKMapViewDelegate {
             guard let response = response else {
                 self.showAlert((error?.localizedDescription)!)
                 self.shouldPresent(false)
+                for annotation in self.mapView.annotations where annotation.isKind(of: MKPointAnnotation.self) {
+                    self.mapView.removeAnnotation(annotation)
+                }
+                appDelegate?.window?.rootViewController?.shouldPresent(false)
                 print("Error in calculating route: \(error.debugDescription)")
                 return
             }
@@ -423,7 +514,7 @@ extension MainVC: MKMapViewDelegate {
             centerMapOnUserLocation()
             return
         }
-        mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsetsMake(180, 60, 120, 60), animated: true)
+        mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsetsMake(180, 60, 180, 60), animated: true)
         centerMapButton.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
 }
@@ -555,5 +646,5 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
             animateTableView(shouldShow: false)
         }
     }
-
+    
 }

@@ -43,6 +43,7 @@ class MenuVC: UIViewController, Alertable {
             userProfileImage.isHidden = true
             self.authButton.setTitle("Sign Up/ Login", for: .normal)
         }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -69,6 +70,15 @@ class MenuVC: UIViewController, Alertable {
             } else {
                 self.pickupModeLabel.text = "PICKUP MODE DISABLED"
             }
+            DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value as! Bool == true {
+                    self.pickupModeSwitch.isUserInteractionEnabled = false
+                    self.pickupModeSwitch.onTintColor = .lightGray
+                } else {
+                    self.pickupModeSwitch.isUserInteractionEnabled = true
+                    self.pickupModeSwitch.onTintColor = #colorLiteral(red: 0, green: 0.8745098039, blue: 0.3764705882, alpha: 1)
+                }
+            })
         } else {
             self.userAccountType.text = "PASSENGER"
         }
@@ -96,16 +106,33 @@ class MenuVC: UIViewController, Alertable {
                 self.revealViewController().revealToggle(animated: false)
             }
         } else {
-            do {
-                try Auth.auth().signOut()
-                DataService.instance.REF_USERS.removeAllObservers()
-                DataService.instance.REF_DRIVERS.removeAllObservers()
-                print("Successfully signed out")
-                self.revealViewController().revealToggle(animated: false)
-            } catch {
-                self.showAlert(error.localizedDescription)
-                print("Could not sign out: \(error.localizedDescription)")
+            if userIsDriver {
+                DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (available) in
+                    if available.value as! Bool {
+                        self.revealViewController().revealToggle(animated: false)
+                        self.showAlert("Complete current trip to sign out.")
+                    } else {
+                        self.signOut()
+                    }
+                })
+            } else {
+                signOut()
             }
+        }
+    }
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            DataService.instance.REF_USERS.removeAllObservers()
+            DataService.instance.REF_DRIVERS.removeAllObservers()
+            DataService.instance.REF_TRIPS.removeAllObservers()
+            self.revealViewController().revealToggle(animated: false)
+            print("Successfully signed out")
+        } catch {
+            self.revealViewController().revealToggle(animated: false)
+            self.showAlert(error.localizedDescription)
+            print("Could not sign out: \(error.localizedDescription)")
         }
     }
     

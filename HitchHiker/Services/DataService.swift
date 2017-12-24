@@ -43,8 +43,8 @@ class DataService {
     
     func driverIsAvailable(handler: @escaping(_ status: Bool) -> ()) {
         REF_DRIVERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.childSnapshot(forPath: "isPickupModeEnabled").value as! Bool {
-                if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool {
+            if snapshot.childSnapshot(forPath: "isPickupModeEnabled").value as! Bool == true {
+                if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool == true {
                     handler(false)
                 } else {
                     handler(true)
@@ -75,7 +75,6 @@ class DataService {
             let pickupArray = userData["coordinates"] as! NSArray
             let destinationArray = userData["destinationCoordinates"] as! NSArray
             self.REF_TRIPS.child(currentUserId!).updateChildValues(["pickupCoordinates": pickupArray, "destinationCoordinates": destinationArray, "passengerId": currentUserId!, "tripIsAccepted": false])
-            userIsOnTrip = true
         }
     }
     
@@ -84,7 +83,6 @@ class DataService {
             if snapshot.value as! Bool == false {
                 self.REF_TRIPS.child(passengerKey).updateChildValues(["driverKey": driverKey, "tripIsAccepted": true])
                 self.REF_DRIVERS.child(driverKey).updateChildValues(["driverIsOnTrip": true])
-                driverIsOnTrip = true
             }
         }
     }
@@ -95,8 +93,6 @@ class DataService {
         if driverKey != nil {
             REF_DRIVERS.child(driverKey!).updateChildValues(["driverIsOnTrip": false])
         }
-        userIsOnTrip = false
-        driverIsOnTrip = false
     }
     
 }

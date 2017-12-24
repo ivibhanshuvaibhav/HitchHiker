@@ -617,7 +617,12 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2h-qk-qMw">
-                                <rect key="frame" x="123" y="528" width="129" height="40"/>
+                                <rect key="frame" x="112.5" y="528" width="150" height="40"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="apD-Z1-uyV"/>
+                                    <constraint firstAttribute="width" constant="150" id="vxA-Pg-CpJ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="20"/>
                                 <state key="normal" title="CANCEL TRIP">
                                     <color key="titleColor" red="0.84705882349999995" green="0.2784313725" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -660,6 +665,7 @@
                         <outlet property="mapView" destination="7FC-0A-cVR" id="SPx-eW-w8f"/>
                         <outlet property="menuButton" destination="CoA-tZ-rPV" id="M3y-2B-YVy"/>
                         <outlet property="topView" destination="rtG-cU-zpY" id="z1P-04-re5"/>
+                        <outlet property="userImage" destination="tN1-dg-LjB" id="wmI-Uh-HJ3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
