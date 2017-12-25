@@ -42,7 +42,7 @@ class DataService {
     }
     
     func driverIsAvailable(handler: @escaping(_ status: Bool) -> ()) {
-        REF_DRIVERS.child(currentUserId!).observeSingleEvent(of: .value) { (snapshot) in
+        REF_DRIVERS.child(currentUserId!).observe(.value) { (snapshot) in
             if snapshot.childSnapshot(forPath: "isPickupModeEnabled").value as! Bool == true {
                 if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool == true {
                     handler(false)

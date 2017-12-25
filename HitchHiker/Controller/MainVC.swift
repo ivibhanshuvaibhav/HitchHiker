@@ -137,7 +137,7 @@ class MainVC: UIViewController, Alertable {
                 })
                 
                 DataService.instance.driverIsAvailable(handler: { (available) in
-                    if !available {
+                    if available {
                         DataService.instance.observeTrips(handler: { (tripDict) in
                             guard let tripDict = tripDict else { return }
                             let pickupCoordinates = tripDict["pickupCoordinates"] as! NSArray
@@ -146,6 +146,8 @@ class MainVC: UIViewController, Alertable {
                             pickupVC.initData(pickupCoordinate: CLLocationCoordinate2DMake(pickupCoordinates[0] as! CLLocationDegrees, pickupCoordinates[1] as! CLLocationDegrees), passengerKey: passengerKey)
                             self.present(pickupVC, animated: true, completion: nil)
                         })
+                    } else {
+                        DataService.instance.REF_TRIPS.removeAllObservers()
                     }
                 })
             } else {
@@ -245,7 +247,7 @@ class MainVC: UIViewController, Alertable {
     
     @IBAction func centerMapButtonPressed(_ sender: Any) {
         if userIsDriver {
-            DataService.instance.REF_USERS.child(currentUserId!).observeSingleEvent(of: .value, with: { (snapshot) in
+            DataService.instance.REF_DRIVERS.child(currentUserId!).observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool == true {
                     self.zoomToFitAnnotations(fromMapView: self.mapView)
                 } else {
