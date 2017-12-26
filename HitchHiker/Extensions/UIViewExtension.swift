@@ -11,6 +11,12 @@ import UIKit
 
 extension UIView {
     
+    func changeColour(colour: UIColor, withDuration duration: TimeInterval) {
+        UIView.animate(withDuration: duration) {
+            self.backgroundColor = colour
+        }
+    }
+    
     func fadeTo(alphaValue: CGFloat, withDuration duration: TimeInterval) {
         UIView.animate(withDuration: duration) {
             self.alpha = alphaValue

@@ -662,9 +662,11 @@
                         <outlet property="centerMapButton" destination="zDh-Nn-8b9" id="JhI-vl-AHo"/>
                         <outlet property="destinationCircle" destination="qGt-Gj-JRJ" id="nj1-7X-mSD"/>
                         <outlet property="destinationTextField" destination="gou-KX-pfL" id="AWn-ig-Ko2"/>
+                        <outlet property="locationPanelView" destination="ZFT-uI-gmP" id="R9I-ry-clr"/>
                         <outlet property="mapView" destination="7FC-0A-cVR" id="SPx-eW-w8f"/>
                         <outlet property="menuButton" destination="CoA-tZ-rPV" id="M3y-2B-YVy"/>
                         <outlet property="topView" destination="rtG-cU-zpY" id="z1P-04-re5"/>
+                        <outlet property="topViewHeight" destination="67s-45-bZX" id="Azv-3D-gF9"/>
                         <outlet property="userImage" destination="tN1-dg-LjB" id="wmI-Uh-HJ3"/>
                     </connections>
                 </viewController>
