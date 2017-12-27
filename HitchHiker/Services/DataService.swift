@@ -55,6 +55,16 @@ class DataService {
         }
     }
     
+    func driverPickupEnabled(driverKey: String, handler: @escaping (_ status: Bool) -> ()) {
+        REF_DRIVERS.child(driverKey).child("isPickupModeEnabled").observe(.value) { (status) in
+            if status.value as! Bool == true {
+                handler(true)
+            } else {
+                handler(false)
+            }
+        }
+    }
+    
     func driverIsOnTrip(driverKey: String, handler: @escaping (_ status: Bool, _ driverKey: String?, _ tripKey: String?) -> ()) {
         REF_DRIVERS.child(driverKey).child("driverIsOnTrip").observeSingleEvent(of: .value) { (driverTripStatusSnapshot) in
             guard let driverTripStatus = driverTripStatusSnapshot.value as? Bool else { return }
