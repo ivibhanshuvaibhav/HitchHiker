@@ -63,13 +63,13 @@ class LoginVC: UIViewController, Alertable {
                                     let error = registrationError! as NSError
                                     print("Could not register: \(error.localizedDescription)")
                                     self.showAlert(error.localizedDescription)
-                                    self.authButton.animate(shouldLoad: false, withMessage: "SIGN UP/ LOGIN")
+                                    self.authButton.animate(shouldLoad: false, withMessage: SIGN_UP_LOGIN)
                                     self.emailTextField.isUserInteractionEnabled = true
                                     self.passwordTextField.isUserInteractionEnabled = true
                                 }
                             })
                         } else {
-                            self.authButton.animate(shouldLoad: false, withMessage: "SIGN UP/ LOGIN")
+                            self.authButton.animate(shouldLoad: false, withMessage: SIGN_UP_LOGIN)
                             self.showAlert(error.localizedDescription)
                             self.emailTextField.isUserInteractionEnabled = true
                             self.passwordTextField.isUserInteractionEnabled = true

@@ -44,7 +44,7 @@ class AuthService {
             if isDriver {
                 userIsDriver = true
                 pickupIsEnabled = false
-                let userData = ["provider": user.providerID, "userIsDriver": true, "isPickupModeEnabled": false, "driverIsOnTrip": false] as [String: Any]
+                let userData = ["provider": user.providerID, DRIVER_PICKUP_ENABLED: false, DRIVER_ON_TRIP: false] as [String: Any]
                 DataService.instance.createDBUser(uid: user.uid, userData: userData, isDriver: true)
             } else {
                 userIsDriver = false
@@ -63,7 +63,7 @@ class AuthService {
                     if snapshot.hasChild(user.uid) {
                         userIsDriver = true
                         pickupIsEnabled = false
-                        let userData = ["isPickupModeEnabled": false, "driverIsOnTrip": false] as [String: Any]
+                        let userData = [DRIVER_PICKUP_ENABLED: false, DRIVER_ON_TRIP: false] as [String: Any]
                         DataService.instance.createDBUser(uid: user.uid, userData: userData, isDriver: true)
                         loginComplete(true, nil)
                     } else {

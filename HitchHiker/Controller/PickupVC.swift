@@ -28,7 +28,7 @@ class PickupVC: UIViewController {
         dropPin(forlocation: CLLocation(latitude: (pickupCoordinate?.latitude)!, longitude: (pickupCoordinate?.longitude)!))
         DataService.instance.REF_TRIPS.child(passengerKey!).observe(.value) { (tripSnapshot) in
             if tripSnapshot.exists() {
-                if tripSnapshot.childSnapshot(forPath: "tripIsAccepted").value as! Bool == true {
+                if tripSnapshot.childSnapshot(forPath: TRIP_IS_ACCEPTED).value as! Bool == true {
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
@@ -55,9 +55,9 @@ class PickupVC: UIViewController {
 
 extension PickupVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let dequeuedAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: "userLocation") else {
-            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "userLocation")
-            annotationView.image = UIImage(named: "currentLocationAnnotation")
+        guard let dequeuedAnnotation = mapView.dequeueReusableAnnotationView(withIdentifier: PASSENGER) else {
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: PASSENGER)
+            annotationView.image = UIImage(named: PASSENGER_ANNOTATION)
             return annotationView
         }
         return dequeuedAnnotation

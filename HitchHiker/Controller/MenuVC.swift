@@ -35,13 +35,13 @@ class MenuVC: UIViewController, Alertable {
             userAccountType.text = " "
             userEmailLabel.text = Auth.auth().currentUser?.email
             userProfileImage.isHidden = false
-            self.authButton.setTitle("Sign Out", for: .normal)
+            self.authButton.setTitle(SIGN_OUT, for: .normal)
             observeCurrentUser()
         } else {
             userAccountType.text = " "
             userEmailLabel.text = " "
             userProfileImage.isHidden = true
-            self.authButton.setTitle("Sign Up/ Login", for: .normal)
+            self.authButton.setTitle(SIGN_UP_LOGIN, for: .normal)
         }
         
     }
@@ -66,9 +66,9 @@ class MenuVC: UIViewController, Alertable {
             self.pickupModeLabel.isHidden = false
             self.pickupModeSwitch.isOn = pickupIsEnabled
             if pickupIsEnabled {
-                self.pickupModeLabel.text = "PICKUP MODE ENABLED"
+                self.pickupModeLabel.text = PICKUP_MODE_ENABLED
             } else {
-                self.pickupModeLabel.text = "PICKUP MODE DISABLED"
+                self.pickupModeLabel.text = PICKUP_MODE_DISABLED
             }
             DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripkey) in
                 if isOnTrip {
@@ -87,13 +87,13 @@ class MenuVC: UIViewController, Alertable {
     @IBAction func pickupModeChanged(_ sender: Any) {
         if pickupModeSwitch.isOn {
             pickupIsEnabled = true
-            pickupModeLabel.text = "PICKUP MODE ENABLED"
-            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues(["isPickupModeEnabled": true])
+            pickupModeLabel.text = PICKUP_MODE_ENABLED
+            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues([DRIVER_PICKUP_ENABLED: true])
             DataService.instance.updateUserLocation(uid: currentUserId!, withCoordinates: (CLLocationManager().location?.coordinate)!)
         } else {
             pickupIsEnabled = false
-            pickupModeLabel.text = "PICKUP MODE DISABLED"
-            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues(["isPickupModeEnabled": false])
+            pickupModeLabel.text = PICKUP_MODE_DISABLED
+            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues([DRIVER_PICKUP_ENABLED: false])
             DataService.instance.updateUserLocation(uid: currentUserId!, withCoordinates: CLLocationCoordinate2D())
         }
         self.revealViewController().revealToggle(animated: true)
