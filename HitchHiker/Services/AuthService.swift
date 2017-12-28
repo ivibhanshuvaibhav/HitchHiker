@@ -66,10 +66,11 @@ class AuthService {
                         let userData = ["isPickupModeEnabled": false, "driverIsOnTrip": false] as [String: Any]
                         DataService.instance.createDBUser(uid: user.uid, userData: userData, isDriver: true)
                         loginComplete(true, nil)
+                    } else {
+                        userIsDriver = false
+                        loginComplete(true, nil)
                     }
                 }
-                userIsDriver = false
-                loginComplete(true, nil)
             } else {
                 loginComplete(false, error)
             }

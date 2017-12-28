@@ -16,6 +16,8 @@ class DataService {
     
     static let instance = DataService()
     
+    var tripObserverHandle: UInt = 5
+    
     public private(set) var REF_BASE = DB_BASE
     public private(set) var REF_USERS = DB_BASE.child("users")
     public private(set) var REF_DRIVERS = DB_BASE.child("drivers")
@@ -41,24 +43,27 @@ class DataService {
         }
     }
     
-    func driverIsAvailable(key: String, handler: @escaping(_ status: Bool) -> ()) {
-        REF_DRIVERS.child(key).observe(.value) { (snapshot) in
-            if snapshot.childSnapshot(forPath: "isPickupModeEnabled").value as! Bool == true {
-                if snapshot.childSnapshot(forPath: "driverIsOnTrip").value as! Bool == true {
-                    handler(false)
-                } else {
-                    handler(true)
-                }
+    
+    func driverPickupEnabled(driverKey: String, handler: @escaping (_ status: Bool) -> ()) {
+        REF_DRIVERS.child(driverKey).child("isPickupModeEnabled").observe(.value) { (status) in
+            if status.value as! Bool == true {
+                handler(true)
             } else {
                 handler(false)
             }
         }
     }
     
-    func driverPickupEnabled(driverKey: String, handler: @escaping (_ status: Bool) -> ()) {
-        REF_DRIVERS.child(driverKey).child("isPickupModeEnabled").observe(.value) { (status) in
-            if status.value as! Bool == true {
-                handler(true)
+    func driverIsAvailable(key: String, handler: @escaping(_ status: Bool) -> ()) {
+        driverPickupEnabled(driverKey: key) { (enabled) in
+            if enabled {
+                self.REF_DRIVERS.child(key).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if snapshot.value as! Bool {
+                        handler(false)
+                    } else {
+                        handler(true)
+                    }
+                })
             } else {
                 handler(false)
             }
@@ -101,7 +106,7 @@ class DataService {
     }
     
     func observeTrips(handler: @escaping(_ coordinateDict: Dictionary<String,Any>?) -> ()) {
-        REF_TRIPS.observe(.value) { (snapshot) in
+        tripObserverHandle = REF_TRIPS.observe(.value) { (snapshot) in
             guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
             
             for trip in snapshot {
@@ -114,12 +119,16 @@ class DataService {
         }
     }
     
+    func removeTripObserver() {
+        REF_TRIPS.removeObserver(withHandle: tripObserverHandle)
+    }
+    
     func updateTripWithCoordinates(forPassengerKey passengerKey: String) {
         REF_USERS.child(passengerKey).observeSingleEvent(of: .value) { (snapshot) in
             let userData = snapshot.value as! Dictionary<String, Any>
             let pickupArray = userData["coordinates"] as! NSArray
             let destinationArray = userData["destinationCoordinates"] as! NSArray
-            self.REF_TRIPS.child(passengerKey).updateChildValues(["pickupCoordinates": pickupArray, "destinationCoordinates": destinationArray, "passengerId": currentUserId!, "tripIsAccepted": false])
+            self.REF_TRIPS.child(passengerKey).updateChildValues(["pickupCoordinates": pickupArray, "destinationCoordinates": destinationArray, "passengerId": currentUserId!, "tripIsAccepted": false, "tripIsInProgress": false])
         }
     }
     

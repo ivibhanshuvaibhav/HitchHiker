@@ -70,8 +70,8 @@ class MenuVC: UIViewController, Alertable {
             } else {
                 self.pickupModeLabel.text = "PICKUP MODE DISABLED"
             }
-            DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.value as! Bool == true {
+            DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripkey) in
+                if isOnTrip {
                     self.pickupModeSwitch.isUserInteractionEnabled = false
                     self.pickupModeSwitch.onTintColor = .lightGray
                 } else {
@@ -107,8 +107,8 @@ class MenuVC: UIViewController, Alertable {
             }
         } else {
             if userIsDriver {
-                DataService.instance.REF_DRIVERS.child(currentUserId!).child("driverIsOnTrip").observeSingleEvent(of: .value, with: { (available) in
-                    if available.value as! Bool {
+                DataService.instance.driverIsOnTrip(driverKey: currentUserId!, handler: { (isOnTrip, driverKey, tripkey) in
+                    if isOnTrip {
                         self.revealViewController().revealToggle(animated: false)
                         self.showAlert("Complete current trip to sign out.")
                     } else {
